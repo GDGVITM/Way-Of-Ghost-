@@ -10,6 +10,12 @@ import type { Matchup, Problem, RunResult, SubmissionResult } from "../types";
 
 const ROUND_DURATION = 15 * 60;
 
+const LANGUAGES = [
+  { label: "Java", value: "java" },
+  { label: "Python", value: "python" },
+  { label: "C++", value: "c++" },
+];
+
 export function Round1Page() {
   const navigate = useNavigate();
   const user = useAuthStore((s) => s.user);
@@ -17,7 +23,7 @@ export function Round1Page() {
   const [matchup, setMatchup] = useState<Matchup | null>(null);
   const [problem, setProblem] = useState<Problem | null>(null);
   const [code, setCode] = useState<Record<string, string>>({});
-  const [language] = useState("java");
+  const [language, setLanguage] = useState("java");
   const [output, setOutput] = useState<RunResult | null>(null);
   const [submissionResult, setSubmissionResult] =
     useState<SubmissionResult | null>(null);
@@ -465,11 +471,15 @@ export function Round1Page() {
         <div className="flex flex-1 flex-col">
           <div className="flex items-center gap-3 border-b border-gray-800 bg-ghost-panel px-4 py-2">
             <select
-              className="rounded bg-black/40 px-3 py-1 text-sm text-white opacity-80 cursor-not-allowed"
+              className="rounded bg-black/40 px-3 py-1 text-sm text-white"
               value={language}
-              disabled
+              onChange={(e) => setLanguage(e.target.value)}
             >
-              <option value="java">Java (Locked for Debugging)</option>
+              {LANGUAGES.map((l) => (
+                <option key={l.value} value={l.value}>
+                  {l.label}
+                </option>
+              ))}
             </select>
             <div className="ml-auto flex gap-2">
               <button

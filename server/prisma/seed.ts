@@ -58,6 +58,7 @@ Output Format:
 - Final count of students inside, or "INVALID" if any exit has no matching entry.`,
       difficulty: "Easy",
       roundNumber: 2,
+      hint: "Track currently present IDs using a HashSet. If an exit occurs for an ID not in the set, it's invalid.",
       starterCode: {
         java: `import java.util.*;
 
@@ -107,6 +108,7 @@ Output Format:
 - Maximum tasks completed.`,
       difficulty: "Medium",
       roundNumber: 2,
+      hint: "Sort tasks by deadline. Iterate and maintain a Max-Heap of durations. Accept tasks if they fit; if not, swap against a longer accepted task to save time.",
       starterCode: {
         java: `import java.util.*;
 
@@ -156,6 +158,7 @@ Output Format:
 - Total number of blocked messages.`,
       difficulty: "Medium",
       roundNumber: 2,
+      hint: "Use a map to store the 'last successful time' for each user. Only update it if the current message is sent (i.e., time - last time >= K).",
       starterCode: {
         java: `import java.util.*;
 
@@ -203,6 +206,7 @@ Output Format:
 - Length of the longest valid contiguous segment.`,
       difficulty: "Medium",
       roundNumber: 2,
+      hint: "Simulate a sliding window by iterating linearly. If value <= K, extend your window. If > K, reset your window length to 0.",
       starterCode: {
         java: `import java.util.*;
 
@@ -250,6 +254,7 @@ Output Format:
 - Maximum total reward.`,
       difficulty: "Medium",
       roundNumber: 2,
+      hint: "Sort jobs by deadline. Use a Min-Heap to store the *rewards* of selected jobs. If your selected jobs exceed the current deadline, remove the job with the minimum reward.",
       starterCode: {
         java: `import java.util.*;
 
@@ -342,26 +347,148 @@ class Manager extends Employee {
 
 public class Company {
 
-    public static void main(String args) {
+    public static void main(String args[]) {
+        java.util.Scanner sc = new java.util.Scanner(System.in);
+        String n1 = sc.next();
+        double s1 = sc.nextDouble(); // bug: scanner might need nextDouble
+        String n2 = sc.next();
+        double s2 = sc.nextDouble();
+        double b2 = sc.nextDouble();
 
-        Employee e1 = new Employee("Rahul", 50000)
+        Employee e1 = new Employee(n1, s1)
 
-        Manager m1 = new Manager("Priya", 70000, 10000);
+        Manager m1 = new Manager(n2, s2, b2);
 
         e1.displayInfo();
 
         m1.displayInfo();
 
     }
+}`,
+        python: `class Employee:
+    def __init__(self, name, salary):
+        name = name  
+        salary = salary 
+
+    def display_info(self):
+        print("Employee Name: " + name) 
+        print("Salary: " + str(salary))
+
+    def calculate_salary(self):
+        return salary
+
+class Manager(Employee):
+    def __init__(self, name, salary, bonus):
+        self.bonus = bonus
+
+    def calculate_salary(self):
+        return salary + bonus
+
+    def display_info(self):
+        print("Manager Name: " + self.name)
+        print("Total Salary: " + str(self.calculate_salary()))
+
+if __name__ == "__main__":
+    line1 = input().split()
+    n1 = line1[0]
+    s1 = float(line1[1])
+    
+    line2 = input().split()
+    n2 = line2[0]
+    s2 = float(line2[1])
+    b2 = float(line2[2])
+
+    e1 = Employee(n1, s1)
+    m1 = Manager(n2, s2, b2)
+
+    e1.display_info()
+    m1.display_info()`,
+        "c++": `#include <iostream>
+#include <string>
+using namespace std;
+
+class Employee {
+protected:
+    string name;
+    double salary;
+
+public:
+    Employee(string n, double s) {
+        name = n;
+        salary = s;
+    }
+
+    void displayInfo() {
+        cout << "Employee Name: " << name << endl
+        cout << "Salary: " << salary << endl;
+    }
+
+    double calculateSalary() {
+        return salary;
+    }
+};
+
+class Manager : Employee {
+    double bonus;
+
+public:
+    Manager(string n, double s, double b) : Employee(n, s) {
+        bonus = b;
+    }
+
+    double calculateSalary() {
+        return salary + bonus;
+    }
+
+    void displayInfo() {
+        cout << "Manager Name: " << name << endl;
+        cout << "Total Salary: " << calculateSalary() << endl;
+    }
+};
+
+int main() {
+    string n1, n2;
+    double s1, s2, b2;
+    
+    cin >> n1 >> s1;
+    cin >> n2 >> s2 >> b2;
+
+    Employee e1(n1, s1);
+    Manager m1(n2, s2, b2);
+
+    e1.displayInfo();
+    m1.displayInfo();
+
+    return 0;
 }`
       },
       timeLimit: 900,
       testCases: {
         create: [
-          { input: "", expected: `Employee Name: Rahul
+          { 
+            input: "Rahul 50000\nPriya 70000 10000", 
+            expected: `Employee Name: Rahul
 Salary: 50000.0
 Manager Name: Priya
-Total Salary: 80000.0`, isHidden: false },
+Total Salary: 80000.0`, 
+            isHidden: false 
+          },
+          { 
+            input: "Alice 60000\nBob 80000 15000", 
+            expected: `Employee Name: Alice
+Salary: 60000.0
+Manager Name: Bob
+Total Salary: 95000.0`, 
+            isHidden: false 
+          },
+          { 
+            input: "John 40000\nDoe 90000 5000", 
+            expected: `Employee Name: John
+Salary: 40000.0
+Manager Name: Doe
+Total Salary: 95000.0`, 
+            isHidden: false 
+          },
         ],
       },
     },
@@ -378,16 +505,20 @@ However, the code contains syntax mistakes, incorrect overrides, and logical iss
         java: `public class PaymentSystem {
 
     public static void main(String args[]) {
+        java.util.Scanner sc = new java.util.Scanner(System.in);
+        String name = sc.next();
+        double bal = sc.nextDouble();
+        double amt = sc.nextDouble();
 
         Payment p;
 
-        Customer c = new Customer("Arjun", 2000);
+        Customer c = new Customer(name, bal);
 
         p = c;
 
         c.displayUser();
 
-        p.pay(500);
+        p.pay(amt);
 
         System.out.println("Remaining Balance: " + c.walletBalance);
 
@@ -398,7 +529,7 @@ However, the code contains syntax mistakes, incorrect overrides, and logical iss
 
 interface Payment {
 
-    void pay(double amount)   // BUG 1 (missing ;)
+    void pay(double amount)
 
 }
 
@@ -407,7 +538,7 @@ abstract class User {
     String name;
 
     User(String name) {
-        name = name;   // BUG 2 (logical error)
+        name = name;
     }
 
     abstract void displayUser();
@@ -425,7 +556,7 @@ class Customer extends User implements Payment {
 
     public void pay(double amount) {
 
-        if (walletBalance < amount) {   // BUG 3 (logic error)
+        if (walletBalance < amount) {
             walletBalance = walletBalance - amount;
             System.out.println("Payment Successful");
         } else {
@@ -438,14 +569,126 @@ class Customer extends User implements Payment {
         System.out.println("Customer: " + name);
     }
 
+}`,
+        python: `from abc import ABC, abstractmethod
+
+class Payment(ABC):
+    @abstractmethod
+    def pay(self, amount):
+        pass
+
+class User(ABC):
+    def __init__(self, name):
+        name = name
+
+    @abstractmethod
+    def display_user(self):
+        pass
+
+class Customer(User, Payment):
+    def __init__(self, name, balance):
+        super().__init__(name)
+        self.wallet_balance = balance
+
+    def pay(self, amount):
+        if self.wallet_balance < amount:
+            self.wallet_balance = self.wallet_balance - amount
+            print("Payment Successful")
+        else:
+            print("Insufficient Balance")
+
+    def display_user(self):
+        print("Customer: " + self.name)
+
+if __name__ == "__main__":
+    line = input().split()
+    name = line[0]
+    bal = float(line[1])
+    amt = float(input())
+
+    c = Customer(name, bal)
+    c.display_user()
+    c.pay(amt)
+    print("Remaining Balance: " + str(c.wallet_balance))`,
+        "c++": `#include <iostream>
+#include <string>
+using namespace std;
+
+class Payment {
+public:
+    virtual void pay(double amount) = 0;
+};
+
+class User {
+protected:
+    string name;
+public:
+    User(string n) : name(n) {}
+    virtual void displayUser() = 0;
+};
+
+class Customer : public User, public Payment {
+    double walletBalance;
+public:
+    Customer(string n, double b) : User(n) {
+        walletBalance = b;
+    }
+
+    void pay(double amount) override {
+        if (walletBalance < amount) {
+            walletBalance -= amount;
+            cout << "Payment Successful" << endl;
+        } else {
+            cout << "Insufficient Balance" << endl;
+        }
+    }
+
+    void displayUser() override {
+        cout << "Customer: " << name << endl;
+    }
+
+    double getBalance() { return walletBalance; }
+};
+
+int main() {
+    string name;
+    double bal, amt;
+    cin >> name >> bal >> amt;
+
+    Customer c(name, bal);
+    Payment* p = &c;
+
+    c.displayUser();
+    p->pay(amt);
+
+    cout << "Remaining Balance: " << c.getBalance() << endl;
+    return 0;
 }`
       },
       timeLimit: 900,
       testCases: {
         create: [
-          { input: "", expected: `Customer: Arjun
+          { 
+            input: "Arjun 2000\n500", 
+            expected: `Customer: Arjun
 Payment Successful
-Remaining Balance: 1500.0`, isHidden: false },
+Remaining Balance: 1500.0`, 
+            isHidden: false 
+          },
+          { 
+            input: "Karan 1000\n1500", 
+            expected: `Customer: Karan
+Insufficient Balance
+Remaining Balance: 1000.0`, 
+            isHidden: false 
+          },
+          { 
+            input: "Zara 5000\n5000", 
+            expected: `Customer: Zara
+Payment Successful
+Remaining Balance: 0.0`, 
+            isHidden: false 
+          },
         ],
       },
     },
@@ -491,30 +734,125 @@ However, several logical and syntax errors prevent correct behavior. Fix the pro
 
 
     public static void main(String args[]) {
+        java.util.Scanner sc = new java.util.Scanner(System.in);
+        String n1 = sc.next();
+        String n2 = sc.next();
+        int q1 = sc.nextInt();
+        int q2 = sc.nextInt();
 
-        Library l1 = new Library("Java Programming");
-
-        Library l2 = new Library("Operating Systems");
+        Library l1 = new Library(n1);
+        Library l2 = new Library(n2);
 
         l1.issueBook();
-
-        l1.issueBook(2);
-
-        l2.issueBook(3)
+        l1.issueBook(q1);
+        l2.issueBook(q2);
 
         System.out.println("Books issued from l1: " + l1.getIssuedBooks());
-
         System.out.println("Total books issued: " + totalIssued);
-
     }
 
+}`,
+        python: `class Library:
+    total_issued = 0
+
+    def __init__(self, name):
+        self.book_name = name
+        self.issued_books = 0
+
+    def issue_book(self, quantity=1):
+        issued_books = issued_books + quantity
+        total_issued = total_issued + quantity
+
+    def get_issued_books(self):
+        return issued_books
+
+if __name__ == "__main__":
+    line = input().split()
+    n1 = line[0]
+    n2 = line[1]
+    q1 = int(line[2])
+    q2 = int(line[3])
+
+    l1 = Library(n1)
+    l2 = Library(n2)
+
+    l1.issue_book()
+    l1.issue_book(q1)
+    l2.issue_book(q2)
+
+    print("Books issued from l1: " + str(l1.get_issued_books()))
+    print("Total books issued: " + str(Library.total_issued))`,
+        "c++": `#include <iostream>
+#include <string>
+using namespace std;
+
+class Library {
+    string bookName;
+    int issuedBooks;
+    
+public:
+    static int totalIssued;
+
+    Library(string name) {
+        bookName = name;
+        issuedBooks = 0;
+    }
+
+    void issueBook() {
+        issuedBooks++;
+        totalIssued++;
+    }
+
+    // Overloading
+    void issueBook(int quantity) {
+        issuedBooks += quantity;
+        totalIssued += quantity;
+    }
+
+    int getIssuedBooks() {
+        return issuedBooks;
+    }
+};
+
+int main() {
+    string n1, n2;
+    int q1, q2;
+    cin >> n1 >> n2 >> q1 >> q2;
+
+    Library l1(n1);
+    Library l2(n2);
+
+    l1.issueBook();
+    l1.issueBook(q1);
+    l2.issueBook(q2);
+
+    cout << "Books issued from l1: " << l1.getIssuedBooks() << endl;
+    cout << "Total books issued: " << Library::totalIssued << endl;
+
+    return 0;
 }`
       },
       timeLimit: 900,
       testCases: {
         create: [
-          { input: "", expected: `Books issued from l1: 3
-Total books issued: 6`, isHidden: false },
+          { 
+            input: "Java OS 2 3", 
+            expected: `Books issued from l1: 3
+Total books issued: 6`, 
+            isHidden: false 
+          },
+          { 
+            input: "CPP Python 5 5", 
+            expected: `Books issued from l1: 6
+Total books issued: 11`, 
+            isHidden: false 
+          },
+          { 
+            input: "React Node 10 20", 
+            expected: `Books issued from l1: 11
+Total books issued: 31`, 
+            isHidden: false 
+          },
         ],
       },
     },

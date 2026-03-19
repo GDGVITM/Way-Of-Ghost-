@@ -63,7 +63,15 @@ export async function startRound(roundNumber: number) {
 
   // Round 3 is MVP - no matchups needed, just display problems
 
-  return prisma.eventState.findUnique({ where: { id: "singleton" } });
+  return prisma.eventState.upsert({
+    where: { id: "singleton" },
+    update: { currentRound: roundNumber, roundStatus: RoundStatus.LIVE },
+    create: {
+      id: "singleton",
+      currentRound: roundNumber,
+      roundStatus: RoundStatus.LIVE,
+    },
+  });
 }
 
 export async function resetRound(roundNumber: number) {

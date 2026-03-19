@@ -427,6 +427,16 @@ export function Round2Page() {
           <div className="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-gray-300">
             {problem.description}
           </div>
+
+          {problem.hint && (
+            <div className="mt-6 rounded border border-ghost-gold/30 bg-ghost-gold/10 p-3">
+              <h3 className="mb-1 text-xs font-bold text-ghost-gold uppercase tracking-wider">
+                Hint
+              </h3>
+              <p className="text-sm text-gray-300 italic">{problem.hint}</p>
+            </div>
+          )}
+
           {(!problem.testCases || problem.testCases.length === 0) && (
             <div className="mt-4 rounded border border-ghost-red/40 bg-ghost-red/10 p-3 text-xs text-ghost-red">
               This problem currently has no test cases configured. Run/Submit

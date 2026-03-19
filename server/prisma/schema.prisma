@@ -70,6 +70,7 @@ model Problem {
   description String
   difficulty  String
   roundNumber Int
+  hint        String?
   starterCode Json?
   timeLimit   Int          @default(900)
   testCases   TestCase[]

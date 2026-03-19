@@ -171,6 +171,30 @@ export function AdminPage() {
     if (tab === "leaderboard") loadLeaderboard();
   }, [tab, eventState, loadMatchups, loadRoundMatchupCounts, loadLeaderboard]);
 
+  // Polling for live updates (every 3 seconds)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      loadPending();
+      loadEventState();
+
+      if (tab === "rounds") {
+        loadRoundMatchupCounts();
+        if (eventState) loadMatchups(eventState.currentRound);
+      }
+      if (tab === "leaderboard") loadLeaderboard();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [
+    tab,
+    eventState,
+    loadPending,
+    loadEventState,
+    loadRoundMatchupCounts,
+    loadMatchups,
+    loadLeaderboard,
+  ]);
+
   async function updateUser(userId: string, status: "APPROVED" | "REJECTED") {
     await http.patch(`/admin/users/${userId}`, { status });
     flash(`User ${status.toLowerCase()}.`, "success");

@@ -17,6 +17,7 @@ export type Problem = {
   description: string;
   difficulty: string;
   roundNumber: number;
+  hint?: string;
   starterCode: string;
   timeLimit: number;
   testCases?: TestCase[];
