@@ -23,6 +23,32 @@ Full-stack event platform scaffold for:
    - Backend: `npm run dev:server`
    - Frontend: `npm run dev:client`
 
+## Docker Setup (Linux)
+
+   From the project root:
+
+   1. Start the Docker container:
+      ```bash
+      docker compose up -d
+      ```
+
+   2. Verify the container is running:
+      ```bash
+      docker compose ps
+      docker compose logs -f piston
+      ```
+
+   3. Test the Piston API:
+      ```bash
+      curl http://localhost:2000/api/v2/runtimes
+      ```
+
+   4. Stop the container when finished:
+      ```bash
+      docker compose down
+      ```
+
+
 ## Main endpoints
 - Auth: `/api/auth/register`, `/api/auth/login`
 - Admin: `/api/admin/pending-users`, `/api/admin/users/:userId`, `/api/admin/start-round`
