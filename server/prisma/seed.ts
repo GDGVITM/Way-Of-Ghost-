@@ -59,7 +59,7 @@ Output Format:
       difficulty: "Easy",
       roundNumber: 2,
       hint: "Track currently present IDs using a HashSet. If an exit occurs for an ID not in the set, it's invalid.",
-      starterCode: {
+      starterCode: JSON.stringify({
         java: `import java.util.*;
 
 public class EventTracker {
@@ -81,7 +81,7 @@ int main() {
     // Your code here
     return 0;
 }`
-      },
+      }),
       timeLimit: 900,
       testCases: {
         create: [
